@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本沖繩行 2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght=700&family=Noto+Sans+TC:wght=400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Noto Sans TC', 'sans-serif'],
+                        cute: ['Comic Neue', 'Noto Sans TC', 'sans-serif']
+                    },
+                    colors: {
+                        fuji: {
+                            bg: '#F3F6F9',       /* 輕盈的富士雪山底色 */
+                            paper: '#FFFFFF',    /* 紙張純白 */
+                            primary: '#2C4A6F',  /* 經典富士山藍 */
+                            secondary: '#4A709C',/* 輕柔湖水藍 */
+                            accent: '#D97706',   /* 溫暖日落橘 */
+                            dark: '#1E293B',     /* 深藍灰文字 */
+                            light: '#E2E8F0'     /* 邊框淺灰 */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #F3F6F9;
+            color: #1E293B;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="font-sans min-h-screen pb-24 flex justify-center">
+
+    <div class="w-full max-w-md bg-fuji-bg min-h-screen shadow-xl relative flex flex-col">
+        
+        <header class="bg-fuji-paper p-6 pt-8 pb-8 text-center relative border-b border-fuji-light">
+            <div class="text-[11px] tracking-widest text-fuji-secondary font-bold mb-1 font-cute">- OKINAWA 2026 -</div>
+            <h1 class="font-cute text-3xl font-bold text-fuji-primary tracking-wide flex items-center justify-center gap-2">
+                沖繩情緒手帳
+            </h1>
+            <p class="text-xs text-fuji-secondary mt-2 tracking-wide">
+                <i class="fa-solid fa-cloud mr-1 text-fuji-secondary"></i> 雲端行程即時同步
+            </p>
+        </header>
+
+        <main class="flex-1 p-4 overflow-y-auto">
+            
+            <section id="page-plan" class="tab-content block">
+                <div class="flex justify-between items-center mb-4 pb-2 border-b border-fuji-light">
+                    <h2 class="font-cute text-lg font-bold text-fuji-primary flex items-center gap-2">
+                        <i class="fa-regular fa-compass"></i> 行程時光軸
+                    </h2>
+                    <div class="flex gap-1.5 text-xs font-bold">
+                        <button onclick="switchDay('d1')" id="btn-d1" class="day-btn px-3 py-1 bg-fuji-primary text-white rounded shadow-sm transition-all">D1</button>
+                        <button onclick="switchDay('d2')" id="btn-d2" class="day-btn px-3 py-1 bg-fuji-paper text-fuji-primary border border-fuji-light rounded shadow-sm transition-all">D2</button>
+                        <button onclick="switchDay('d3')" id="btn-d3" class="day-btn px-3 py-1 bg-fuji-paper text-fuji-primary border border-fuji-light rounded shadow-sm transition-all">D3</button>
+                        <button onclick="switchDay('d4')" id="btn-d4" class="day-btn px-3 py-1 bg-fuji-paper text-fuji-primary border border-fuji-light rounded shadow-sm transition-all">D4</button>
+                    </div>
+                </div>
+                
+                <div id="loading-status" class="text-center py-12 text-sm text-fuji-secondary font-medium">
+                    <i class="fa-solid fa-spinner fa-spin mr-2 text-fuji-secondary"></i>輕輕劃向雲端手帳中...
+                </div>
+
+                <div id="day-d1" class="day-timeline space-y-4"></div>
+                <div id="day-d2" class="day-timeline space-y-4 hidden"></div>
+                <div id="day-d3" class="day-timeline space-y-4 hidden"></div>
+                <div id="day-d4" class="day-timeline space-y-4 hidden"></div>
+            </section>
+
+            <section id="page-guide" class="tab-content hidden">
+                <h2 class="font-cute text-lg font-bold text-fuji-primary mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-map-location-dot"></i> 手帳地圖導覽
+                </h2>
+                <div class="space-y-6">
+                    <article class="bg-fuji-paper p-5 rounded shadow-sm border border-fuji-light">
+                        <span class="text-xs bg-fuji-primary text-white px-2.5 py-1 rounded font-bold">🐋 深度文化</span>
+                        <h3 class="text-lg font-bold text-fuji-dark mt-2 mb-2">美麗海水族館：黑潮之海</h3>
+                        <p class="text-sm text-fuji-dark/90 leading-relaxed mb-4 text-justify">
+                            這裡擁有世界第三大的巨大水槽「黑潮之海」。為了承受如此巨大的水壓，水槽的壓克力觀景窗厚度高達 60 公分！
+                        </p>
+                        <div class="w-full h-48 rounded overflow-hidden border border-fuji-light shadow-inner">
+                            <iframe width="100%" height="100%" frameborder="0" src="https://www.openstreetmap.org/export/embed.html?bbox=127.8752%2C26.6923%2C127.8812%2C26.6963&layer=mapnik&marker=26.6943%2C127.8782"></iframe>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section id="page-shopping" class="tab-content hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-cute text-lg font-bold text-fuji-primary flex items-center gap-2">
+                        <i class="fa-solid fa-cart-shopping"></i> 藥妝伴手禮清單
+                    </h2>
+                    
+                    <div class="flex bg-white p-0.5 rounded-lg border border-fuji-light text-[11px] font-bold shadow-sm">
+                        <button id="toggle-type-local" onclick="setPostType('local')" class="px-3 py-1 rounded-md bg-fuji-primary text-white shadow-2xs transition-all flex items-center gap-1">
+                            <i class="fa-solid fa-user-lock"></i>個人私人
+                        </button>
+                        <button id="toggle-type-cloud" onclick="setPostType('cloud')" class="px-3 py-1 rounded-md text-fuji-secondary transition-all flex items-center gap-1">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>團隊共同
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-4 rounded-xl border border-fuji-light shadow-sm mb-6 space-y-3">
+                    <div class="grid grid-cols-3 gap-2">
+                        <input type="text" id="shop-item-name" placeholder="商品名稱 (必填)" class="col-span-2 px-3 py-2 border border-fuji-light rounded-lg text-xs bg-fuji-bg focus:outline-none focus:border-fuji-secondary">
+                        <input type="number" id="shop-item-qty" placeholder="數量" min="1" value="1" class="px-3 py-2 border border-fuji-light rounded-lg text-xs bg-fuji-bg focus:outline-none focus:border-fuji-secondary text-center font-bold text-fuji-primary">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="shop-item-store" placeholder="店家 (如: 全家、LAWSON)" class="px-3 py-2 border border-fuji-light rounded-lg text-xs bg-fuji-bg focus:outline-none focus:border-fuji-secondary">
+                        <input type="text" id="shop-item-note" placeholder="備註費用或商品圖片網址" class="px-3 py-2 border border-fuji-light rounded-lg text-xs bg-fuji-bg focus:outline-none focus:border-fuji-secondary">
+                    </div>
+                    <button id="add-shop-btn" onclick="handleShoppingSubmit()" class="w-full bg-fuji-primary text-white text-xs font-bold py-2.5 rounded-lg shadow-sm hover:bg-fuji-secondary transition-all">
+                        <i class="fa-solid fa-plus mr-1"></i>存入手機私房清單
+                    </button>
+                </div>
+
+                <div id="shopping-list-container" class="space-y-6">
+                    <div class="text-center py-4 text-xs text-fuji-secondary"><i class="fa-solid fa-spinner fa-spin mr-1"></i>正在同步日本最新爆買清單...</div>
+                </div>
+            </section>
+
+            <section id="page-wallet" class="tab-content hidden">
+                <h2 class="font-cute text-lg font-bold text-fuji-primary mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-coins"></i> 隨身小帳本
+                </h2>
+                <div class="bg-fuji-paper p-4 rounded border border-fuji-light shadow-sm mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="text-xs font-bold text-fuji-secondary">自訂日幣匯率 (1 JPY = TWD)</label>
+                        <input type="number" id="exchange-rate" value="0.215" step="0.001" class="w-20 px-2 py-1 text-right text-xs border border-fuji-light rounded bg-fuji-bg font-bold text-fuji-primary">
+                    </div>
+                    <input type="text" id="calc-input" placeholder="小計算機，如: 500+1200" class="w-full px-3 py-2 border border-fuji-light rounded bg-fuji-bg text-sm font-mono focus:outline-none">
+                    <div class="flex justify-between text-xs px-1 mt-2 font-medium">
+                        <span class="text-fuji-secondary">計算: <strong id="calc-jpy" class="text-fuji-dark">0</strong> JPY</span>
+                        <span class="text-fuji-secondary">台幣: <strong id="calc-twd" class="text-fuji-accent text-sm">NT$ 0</strong></span>
+                    </div>
+                </div>
+                <div class="bg-fuji-paper p-4 rounded border border-fuji-light shadow-sm mb-4">
+                    <div class="grid grid-cols-2 gap-2 mb-3">
+                        <input type="text" id="expense-title" placeholder="買了什麼？" class="px-3 py-2 border border-fuji-light rounded text-xs bg-fuji-bg focus:outline-none">
+                        <input type="number" id="expense-amount" placeholder="日幣金額" class="px-3 py-2 border border-fuji-light rounded text-xs bg-fuji-bg focus:outline-none">
+                    </div>
+                    <button onclick="addExpense()" class="w-full bg-fuji-primary text-white text-xs font-bold py-2.5 rounded shadow-md hover:bg-fuji-secondary transition-all">
+                        <i class="fa-solid fa-plus mr-1"></i>記一筆開銷
+                    </button>
+                </div>
+                <div id="expense-list" class="space-y-2"></div>
+            </section>
+
+            <section id="page-lists" class="tab-content hidden">
+                <h2 class="font-cute text-lg font-bold text-fuji-primary mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check"></i> 行前行李檢查點
+                </h2>
+                <div id="checklist-container" class="bg-fuji-paper p-5 rounded border border-fuji-light shadow-sm space-y-3"></div>
+            </section>
+
+            <section id="page-info" class="tab-content hidden">
+                <h2 class="font-cute text-lg font-bold text-fuji-primary mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info"></i> 實用旅遊資訊
+                </h2>
+                <div class="bg-fuji-paper p-6 rounded border border-fuji-light shadow-sm text-center">
+                    <div class="text-4xl text-fuji-secondary/30 mb-2"><i class="fa-solid fa-file-signature"></i></div>
+                    <p class="text-xs text-fuji-secondary font-medium mb-3">點擊下方直接開啟 Google 試算表App<br>大家可以一齊即時修改資料喔！</p>
+                    <a id="edit-sheet-btn" href="#" target="_blank" class="inline-block w-full bg-fuji-primary text-white text-xs font-bold py-3 rounded shadow-md hover:bg-fuji-secondary transition-all">
+                        <i class="fa-solid fa-pen-to-square mr-1"></i>呼叫 Google 試算表線上編輯
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white/95 backdrop-blur-md border-t border-fuji-light flex justify-around items-center py-2.5 z-50 shadow-lg px-2">
+            <button onclick="switchTab('plan')" id="nav-plan" class="nav-btn flex flex-col items-center text-fuji-primary transition-all"><i class="fa-regular fa-compass text-lg"></i><span class="text-[10px] font-bold mt-0.5">PLAN</span></button>
+            <button onclick="switchTab('guide')" id="nav-guide" class="nav-btn flex flex-col items-center text-fuji-secondary transition-all"><i class="fa-solid fa-map-location-dot text-lg"></i><span class="text-[10px] font-bold mt-0.5">GUIDE</span></button>
+            <button onclick="switchTab('shopping')" id="nav-shopping" class="nav-btn flex flex-col items-center text-fuji-secondary transition-all"><i class="fa-solid fa-cart-shopping text-lg"></i><span class="text-[10px] font-bold mt-0.5">SHOPPING</span></button>
+            <button onclick="switchTab('lists')" id="nav-lists" class="nav-btn flex flex-col items-center text-fuji-secondary transition-all"><i class="fa-solid fa-list-check text-lg"></i><span class="text-[10px] font-bold mt-0.5">LISTS</span></button>
+            <button onclick="switchTab('info')" id="nav-info" class="nav-btn flex flex-col items-center text-fuji-secondary transition-all"><i class="fa-solid fa-circle-info text-lg"></i><span class="text-[10px] font-bold mt-0.5">INFO</span></button>
+        </nav>
+    </div>
+
+    <script>
+        const SHEET_ID = '1H0pLIy9Cg1cMI673vZprheKm-DB6DisVU3U-24Q4Z7Y';
+        const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+        const SHOPPING_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=%E8%B3%BC%E7%89%A9`;
+        const SHEET_EDIT_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?gid=0#gid=0`;
+
+        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwGeO78Oh1Q4mKGV-8ZzRNcDcZOag8EzbdNFUS7XzfpvDjDg7t6oawOn01-kjTrjQjzVA/exec';
+
+        let cloudShoppingItems = [];
+        let currentPostType = 'local'; 
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const editBtn = document.getElementById('edit-sheet-btn');
+            if (editBtn) editBtn.href = SHEET_EDIT_URL;
+            fetchTravelPlan();
+            fetchCloudShopping();
+            initChecklist();
+            loadExpenses();
+            initCalc();
+        });
+
+        // 讀取行程
+        async function fetchTravelPlan() {
+            try {
+                const response = await fetch(SHEET_CSV_URL);
+                const csvText = await response.text();
+                parseAndRenderCSV(csvText);
+                document.getElementById('loading-status').classList.add('hidden');
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function parseAndRenderCSV(csvText) {
+            const lines = csvText.split('\n');
+            if(lines.length <= 1) return;
+            
+            const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+            document.getElementById('day-d1').innerHTML = '';
+            document.getElementById('day-d2').innerHTML = '';
+            document.getElementById('day-d3').innerHTML = '';
+            document.getElementById('day-d4').innerHTML = '';
+
+            for (let i = 1; i < lines.length; i++) {
+                if(!lines[i].trim()) continue;
+                const currentLine = lines[i].split(',');
+                let row = {};
+                headers.forEach((header, index) => {
+                    row[header] = currentLine[index] ? currentLine[index].replace(/"/g, '').trim() : '';
+                });
+                if(!row['標題'] && !row['時間起']) continue;
+                renderTimelineCard(row);
+            }
+        }
+
+        function renderTimelineCard(row) {
+            let dayValue = (row['Day'] || '').trim().toLowerCase(); 
+            if (dayValue.startsWith('d')) { dayValue = 'd' + dayValue.replace(/[^0-9]/g, ''); }
+            const containerId = `day-${dayValue}`;
+            const targetContainer = document.getElementById(containerId);
+            if (!targetContainer) return;
+
+            let timeString = row['時間起'] || '';
+            if (row['時間迄']) { timeString += ` - ${row['時間迄']}`; }
+
+            let buttonHtml = '';
+            if (row['Google Map']) buttonHtml += `<a href="${row['Google Map']}" target="_blank" class="text-[11px] bg-fuji-bg font-bold px-2.5 py-1 rounded text-fuji-primary border border-fuji-light mr-1.5 inline-flex items-center gap-0.5"><i class="fa-solid fa-location-dot text-fuji-accent"></i>導航</a>`;
+            if (row['網頁']) buttonHtml += `<a href="${row['網頁']}" target="_blank" class="text-[11px] bg-fuji-bg font-bold px-2.5 py-1 rounded text-fuji-primary border border-fuji-light mr-1.5 inline-flex items-center gap-0.5"><i class="fa-solid fa-earth-asia"></i>網站</a>`;
+
+            let metaHtml = '';
+            if (row['區間費用']) metaHtml += `<span class="inline-block bg-fuji-light text-fuji-primary text-[10px] font-bold px-2 py-0.5 rounded mr-1.5">💰 ${row['區間費用']}</span>`;
+            if (row['備註']) metaHtml += `<span class="text-[11px] text-fuji-accent font-bold">💬 ${row['備註']}</span>`;
+
+            let cardHtml = `<div class="bg-fuji-paper p-4 rounded shadow-sm border border-fuji-light hover:border-fuji-secondary transition-all"><div class="flex justify-between items-center text-xs text-fuji-secondary font-bold mb-1"><span class="text-fuji-primary bg-fuji-light px-2 py-0.5 rounded">${timeString}</span>${row['分類'] ? `<span class="text-[10px] bg-fuji-bg px-2 py-0.5 rounded text-fuji-primary border border-fuji-light">${row['分類']}</span>` : ''}</div><h4 class="font-bold text-fuji-dark text-base mt-1.5">${row['標題'] || '未命名行程'}</h4>${row['說明'] ? `<p class="text-xs text-fuji-secondary mt-1.5 text-justify leading-relaxed">${row['說明']}</p>` : ''}<div class="mt-2.5">${metaHtml}</div><div class="mt-2.5">${buttonHtml}</div></div>`;
+            
+            if (row['分類'] === '重要') {
+                cardHtml = `<div class="bg-fuji-accent/10 border-l-4 border-fuji-accent p-4 rounded shadow-sm bg-white"><div class="flex justify-between text-xs text-fuji-accent font-bold mb-1"><span class="bg-fuji-accent text-white px-2 py-0.5 rounded">${timeString}</span><span><i class="fa-solid fa-star mr-1"></i>重要提醒</span></div><p class="font-bold text-fuji-dark text-base mt-1.5">${row['標題'] || '未命名行程'}</p>${row['說明'] ? `<p class="text-xs text-fuji-dark/80 mt-1.5 leading-relaxed bg-fuji-bg/50 p-2 rounded text-justify">${row['說明']}</p>` : ''}<div class="mt-2.5">${metaHtml}</div><div class="mt-2.5">${buttonHtml}</div></div>`;
+            }
+            targetContainer.innerHTML += cardHtml;
+        }
+
+        // 轉換 Google 雲端硬碟圖片網址為「直連格式」
+        function parseImageUrl(url) {
+            if (!url) return '';
+            let cleanUrl = url.trim();
+            if (cleanUrl.includes('drive.google.com')) {
+                let fileId = '';
+                if (cleanUrl.includes('/file/d/')) {
+                    const parts = cleanUrl.split('/file/d/');
+                    if (parts[1]) fileId = parts[1].split('/')[0].split('?')[0];
+                } else if (cleanUrl.includes('id=')) {
+                    const urlParams = new URLSearchParams(cleanUrl.split('?')[1]);
+                    fileId = urlParams.get('id') || '';
+                }
+                if (fileId) return `https://drive.google.com/uc?export=view&id=${fileId}`;
+            }
+            return cleanUrl;
+        }
+
+        async function fetchCloudShopping() {
+            try {
+                const response = await fetch(SHOPPING_CSV_URL);
+                if (!response.ok) throw new Error();
+                const csvText = await response.text();
+                
+                const lines = csvText.split('\n');
+                cloudShoppingItems = [];
+                
+                if (lines.length > 1) {
+                    const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+                    
+                    const idxLogo = headers.indexOf("店家 LOGO");
+                    const idxStore = headers.indexOf("店家");
+                    const idxName = headers.indexOf("商品名稱");
+                    const idxQty = headers.indexOf("數量");
+                    const idxNote = headers.indexOf("備註");
+                    const idxLink = headers.indexOf("連結");
+                    const idxImg = headers.indexOf("商品圖片");
+
+                    for(let i = 1; i < lines.length; i++) {
+                        if(!lines[i].trim()) continue;
+                        const currentLine = lines[i].split(',');
+                        
+                        let name = idxName !== -1 && currentLine[idxName] ? currentLine[idxName].replace(/"/g, '').trim() : '';
+                        if (!name) continue;
+
+                        let logo = idxLogo !== -1 && currentLine[idxLogo] ? currentLine[idxLogo].replace(/"/g, '').trim() : '';
+                        let store = idxStore !== -1 && currentLine[idxStore] ? currentLine[idxStore].replace(/"/g, '').trim() : '其他';
+                        let qtyStr = idxQty !== -1 && currentLine[idxQty] ? currentLine[idxQty].replace(/"/g, '').trim() : '1';
+                        let note = idxNote !== -1 && currentLine[idxNote] ? currentLine[idxNote].replace(/"/g, '').trim() : '';
+                        let link = idxLink !== -1 && currentLine[idxLink] ? currentLine[idxLink].replace(/"/g, '').trim() : '';
+                        let image = idxImg !== -1 && currentLine[idxImg] ? currentLine[idxImg].replace(/"/g, '').trim() : '';
+
+                        cloudShoppingItems.push({
+                            id: 'cloud-' + i,
+                            name: name,
+                            qty: parseInt(qtyStr) || 1,
+                            store: store || '其他購買',
+                            logo: parseImageUrl(logo),
+                            note: note || '',
+                            link: link || '',
+                            image: parseImageUrl(image),
+                            isCloud: true
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("讀取雲端購物異常:", error);
+            }
+            renderCombinedShoppingList();
+        }
+
+        function setPostType(type) {
+            currentPostType = type;
+            const localBtn = document.getElementById('toggle-type-local');
+            const cloudBtn = document.getElementById('toggle-type-cloud');
+            const submitBtn = document.getElementById('add-shop-btn');
+
+            if (type === 'local') {
+                localBtn.className = "px-3 py-1 rounded-md bg-fuji-primary text-white shadow-2xs transition-all flex items-center gap-1";
+                cloudBtn.className = "px-3 py-1 rounded-md text-fuji-secondary transition-all flex items-center gap-1";
+                submitBtn.className = "w-full bg-fuji-primary text-white text-xs font-bold py-2.5 rounded-lg shadow-sm hover:bg-fuji-secondary transition-all";
+                submitBtn.innerHTML = `<i class="fa-solid fa-plus mr-1"></i>存入手機私房清單`;
+            } else {
+                localBtn.className = "px-3 py-1 rounded-md text-fuji-secondary transition-all flex items-center gap-1";
+                cloudBtn.className = "px-3 py-1 rounded-md bg-fuji-primary text-white shadow-2xs transition-all flex items-center gap-1";
+                submitBtn.className = "w-full bg-amber-600 text-white text-xs font-bold py-2.5 rounded-lg shadow-sm hover:bg-amber-700 transition-all";
+                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i>同步發射至團隊 Google 試算表`;
+            }
+        }
+
+        function handleShoppingSubmit() {
+            const name = document.getElementById('shop-item-name').value.trim();
+            const qty = parseInt(document.getElementById('shop-item-qty').value) || 1;
+            const store = document.getElementById('shop-item-store').value.trim() || '其他';
+            const noteOrImg = document.getElementById('shop-item-note').value.trim();
+
+            if (!name) { alert('請填寫商品名稱！'); return; }
+
+            if (currentPostType === 'local') {
+                const localItems = JSON.parse(localStorage.getItem('ok_shopping_local')) || [];
+                localItems.push({
+                    id: 'local-' + Date.now(),
+                    name, qty, store, logo: '',
+                    note: noteOrImg, image: '', isCloud: false
+                });
+                localStorage.setItem('ok_shopping_local', JSON.stringify(localItems));
+                clearShoppingForm();
+                renderCombinedShoppingList();
+            } else {
+                const submitBtn = document.getElementById('add-shop-btn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i>正在同步至雲端...`;
+
+                let finalNote = noteOrImg;
+                let finalImage = '';
+                if (noteOrImg.startsWith('http://') || noteOrImg.startsWith('https://')) {
+                    finalImage = noteOrImg;
+                    finalNote = '';
+                }
+
+                // 【修正處】將 Payload 的 Key 修改為精準對應試算表標題欄位名稱
+                const payload = { 
+                    "店家": store, 
+                    "商品名稱": name, 
+                    "數量": qty, 
+                    "備註": finalNote, 
+                    "連結": '', 
+                    "商品圖片": finalImage 
+                };
+
+                fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).then(() => {
+                    alert(`🎉 【${name}】已成功加入雲端！約 1 分鐘後將更新完成。`);
+                    clearShoppingForm();
+                    setTimeout(fetchCloudShopping, 2500);
+                }).catch(err => {
+                    alert('同步失敗，請檢查網路連線。');
+                    console.error(err);
+                }).finally(() => {
+                    submitBtn.disabled = false;
+                    setPostType('cloud');
+                });
+            }
+        }
+
+        function clearShoppingForm() {
+            document.getElementById('shop-item-name').value = '';
+            document.getElementById('shop-item-qty').value = '1';
+            document.getElementById('shop-item-store').value = '';
+            document.getElementById('shop-item-note').value = '';
+        }
+
+        function renderCombinedShoppingList() {
+            const container = document.getElementById('shopping-list-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const localItems = JSON.parse(localStorage.getItem('ok_shopping_local')) || [];
+            const allItems = [...cloudShoppingItems, ...localItems];
+
+            if (allItems.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-xs text-fuji-secondary font-medium">🛒 清單空空如也。<br>隨手新增項目吧！</div>`;
+                return;
+            }
+
+            const storeGroups = {};
+            allItems.forEach(item => {
+                const storeName = item.store || '其他購買';
+                if (!storeGroups[storeName]) {
+                    storeGroups[storeName] = { items: [], logo: item.logo || '' };
+                }
+                if (item.logo && !storeGroups[storeName].logo) {
+                    storeGroups[storeName].logo = item.logo;
+                }
+                storeGroups[storeName].items.push(item);
+            });
+
+            for (const [storeName, group] of Object.entries(storeGroups)) {
+                
+                let storeLogoHtml = `<i class="fa-solid fa-shop text-fuji-secondary mr-2 text-sm"></i>`;
+                if (group.logo) {
+                    storeLogoHtml = `<img src="${group.logo}" class="w-5 h-5 object-contain mr-2 rounded-sm inline-block" onerror="this.style.display='none'">`;
+                }
+
+                let groupHtml = `
+                    <div class="bg-white rounded-2xl shadow-md border border-fuji-light overflow-hidden mb-6">
+                        <div class="bg-fuji-bg px-4 py-3 border-b border-fuji-light flex justify-between items-center">
+                            <div class="flex items-center font-bold text-sm text-fuji-primary">
+                                ${storeLogoHtml}
+                                <span>${storeName}</span>
+                            </div>
+                            <span class="text-[11px] bg-fuji-secondary/20 text-fuji-primary px-2.5 py-0.5 rounded-full font-medium">
+                                ${group.items.length} 件商品
+                            </span>
+                        </div>
+                        <div class="divide-y divide-fuji-light">`;
+
+                group.items.forEach(item => {
+                    
+                    let productImgHtml = '';
+                    if (item.image && item.image.trim() !== '') {
+                        productImgHtml = `
+                            <div class="w-full h-48 bg-fuji-bg flex items-center justify-center overflow-hidden border-b border-fuji-light relative">
+                                <img src="${item.image}" class="w-full h-full object-cover" alt="${item.name}">
+                            </div>`;
+                    }
+
+                    groupHtml += `
+                        <div class="flex flex-col bg-white">
+                            ${productImgHtml}
+                            <div class="p-4 flex items-start justify-between gap-3">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <h4 class="font-bold text-base text-fuji-dark leading-snug break-words">
+                                            ${item.name}
+                                        </h4>
+                                        ${!item.isCloud ? `<span class="text-[9px] bg-amber-50 text-amber-700 font-bold px-1.5 py-0.5 rounded border border-amber-200">私房</span>` : ''}
+                                    </div>
+                                    ${item.note ? `
+                                        <div class="text-xs text-fuji-secondary mt-1.5 font-medium bg-fuji-bg px-2 py-1.5 rounded-lg border border-fuji-light inline-block">
+                                            <i class="fa-regular fa-comment-dots mr-1 text-fuji-secondary/70"></i>${item.note}
+                                        </div>` : ''
+                                    }
+                                </div>
+                                <div class="flex items-center gap-2 flex-shrink-0 mt-0.5">
+                                    <div class="flex items-center border border-fuji-light rounded-lg bg-fuji-bg overflow-hidden shadow-2xs">
+                                        <span class="px-2.5 py-1 text-xs font-bold text-fuji-secondary select-none bg-white border-r border-fuji-light">
+                                            數量
+                                        </span>
+                                        <span class="px-3 py-1 text-sm font-black text-fuji-primary min-w-[28px] text-center select-none">
+                                            ${item.qty}
+                                        </span>
+                                    </div>
+                                    ${!item.isCloud ? `
+                                        <button onclick="deleteLocalShoppingItem('${item.id}')" class="text-fuji-secondary hover:text-red-500 p-1.5 transition-all text-sm bg-fuji-bg rounded-lg border border-fuji-light">
+                                            <i class="fa-regular fa-trash-can"></i>
+                                        </button>` : ''
+                                    }
+                                </div>
+                            </div>
+                        </div>`;
+                });
+
+                groupHtml += `</div></div>`;
+                container.innerHTML += groupHtml;
+            }
+        }
+
+        function deleteLocalShoppingItem(id) {
+            let localItems = JSON.parse(localStorage.getItem('ok_shopping_local')) || [];
+            localItems = localItems.filter(item => item.id !== id);
+            localStorage.setItem('ok_shopping_local', JSON.stringify(localItems));
+            renderCombinedShoppingList();
+        }
+
+        // Tab 切換
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`page-${tabName}`).classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-fuji-primary'); btn.classList.add('text-fuji-secondary');
+            });
+            document.getElementById(`nav-${tabName}`).classList.remove('text-fuji-secondary');
+            document.getElementById(`nav-${tabName}`).classList.add('text-fuji-primary');
+            if(tabName === 'shopping') { fetchCloudShopping(); }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchDay(dayId) {
+            document.querySelectorAll('.day-timeline').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`day-${dayId}`).classList.remove('hidden');
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                btn.className = "day-btn px-3 py-1 bg-fuji-paper text-fuji-primary border border-fuji-light rounded shadow-sm";
+            });
+            document.getElementById(`btn-${dayId}`).className = "day-btn px-3 py-1 bg-fuji-primary text-white rounded shadow-sm";
+        }
+
+        function initChecklist() {
+            const defaultChecklist = [
+                { id: 1, text: "中華民國護照 (效期6個月以上)", checked: true },
+                { id: 2, text: "日本上網卡 (eSIM / 實體卡)", checked: false },
+                { id: 3, text: "日文駕照譯本 ＆ 台灣駕照正本", checked: false }
+            ];
+            if (!localStorage.getItem('ok_checklist')) localStorage.setItem('ok_checklist', JSON.stringify(defaultChecklist));
+            renderChecklist(JSON.parse(localStorage.getItem('ok_checklist')));
+        }
+
+        function renderChecklist(items) {
+            const container = document.getElementById('checklist-container'); if(!container) return; container.innerHTML = '';
+            items.forEach(item => {
+                container.innerHTML += `
+                    <label class="flex items-start gap-3 text-xs text-fuji-dark font-medium py-1">
+                        <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleCheck(${item.id})" class="mt-0.5 accent-fuji-primary h-4 w-4 rounded">
+                        <span class="${item.checked ? 'line-through text-fuji-secondary font-normal' : 'font-bold text-fuji-dark'}">${item.text}</span>
+                    </label>`;
+            });
+        }
+
+        function toggleCheck(id) {
+            let stored = JSON.parse(localStorage.getItem('ok_checklist'));
+            stored = stored.map(i => i.id === id ? { ...i, checked: !i.checked } : i);
+            localStorage.setItem('ok_checklist', JSON.stringify(stored));
+            renderChecklist(stored);
+        }
+
+        function initCalc() {
+            const input = document.getElementById('calc-input'); if(!input) return;
+            input.addEventListener('input', function() {
+                const rate = parseFloat(document.getElementById('exchange-rate').value) || 0.215;
+                try {
+                    let sanitized = this.value.replace(/[^0-9+\-*/().]/g, '');
+                    if(!sanitized) { document.getElementById('calc-jpy').innerText = '0'; document.getElementById('calc-twd').innerText = 'NT$ 0'; return; }
+                    let jpy = Function('"use strict";return (' + sanitized + ')')() || 0;
+                    jpy = Math.round(jpy);
+                    document.getElementById('calc-jpy').innerText = jpy;
+                    document.getElementById('calc-twd').innerText = 'NT$ ' + Math.round(jpy * rate).toLocaleString();
+                } catch(e) {}
+            });
+        }
+
+        function addExpense() {
+            const title = document.getElementById('expense-title').value.trim() || '未命名開銷';
+            const jpy = parseFloat(document.getElementById('expense-amount').value) || 0;
+            const rate = parseFloat(document.getElementById('exchange-rate').value) || 0.215;
+            if(jpy <= 0) return;
+            const expenses = JSON.parse(localStorage.getItem('ok_expenses')) || [];
+            expenses.push({ id: Date.now(), title, jpy, twd: Math.round(jpy * rate) });
+            localStorage.setItem('ok_expenses', JSON.stringify(expenses));
+            document.getElementById('expense-title').value = ''; document.getElementById('expense-amount').value = '';
+            loadExpenses();
+        }
+
+        function loadExpenses() {
+            const expenses = JSON.parse(localStorage.getItem('ok_expenses')) || [];
+            const container = document.getElementById('expense-list'); if(!container) return; container.innerHTML = '';
+            expenses.forEach(item => {
+                container.innerHTML += `
+                    <div class="bg-fuji-paper p-3 rounded border border-fuji-light flex justify-between items-center text-xs shadow-sm">
+                        <div><strong class="text-fuji-dark">${item.title}</strong> <span class="text-fuji-secondary font-bold">(${item.jpy} JPY)</span></div>
+                        <div class="text-fuji-accent font-extrabold text-sm">NT$ ${item.twd}</div>
+                    </div>`;
+            });
+        }
+    </script>
+</body>
+</html>
